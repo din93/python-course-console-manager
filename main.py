@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, platform, getpass
 import modules.fsmanage as fsmanage
 from modules.playvictory import play_victory
 from modules.playbankaccount import play_bank_account
@@ -26,8 +26,8 @@ def print_help():
     print('  exit => выход')
 
 def sysinfo():
-    print('Операционная система:', os.environ['OS'])
-    print('Имя пользователя:', os.environ['USERNAME'])
+    print('Операционная система:', platform.system(), platform.release())
+    print('Имя пользователя:', getpass.getuser())
     print('Программная платформа:', sys.platform)
 
 print('\nSimple Commands Manager v0.1')
