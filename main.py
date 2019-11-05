@@ -30,46 +30,50 @@ def sysinfo():
     print('Имя пользователя:', getpass.getuser())
     print('Программная платформа:', sys.platform)
 
-print('\nSimple Commands Manager v0.1')
-fsmanage.whereami()
-print('Используйте команду "help" для получения информации о доступных командах')
-print('Вводите команду после @>:')
-while True:
-    command = input('@> ').lower().strip()
-    if command == 'help':
-        print_help()
-    elif command == 'whereami':
-        fsmanage.whereami()
-    elif command == 'makedir':
-        fsmanage.makedir()
-    elif command == 'remove':
-        fsmanage.remove(exceptional_dirs=exceptional_dirs)
-    elif command == 'rename':
-        fsmanage.rename()
-    elif command == 'move':
-        fsmanage.move()
-    elif command == 'copy':
-        fsmanage.copy()
-    elif command == 'dirlist':
-        fsmanage.dirlist()
-    elif command == 'dirlist-d':
-        fsmanage.dirlist(dirs_only=True)
-    elif command == 'dirlist-f':
-        fsmanage.dirlist(files_only=True)
-    elif command == 'changedir':
-        fsmanage.changedir()
-    elif command == 'sysinfo':
-        sysinfo()
-    elif command == 'playvictory':
-        play_victory()
-    elif command == 'playbankaccount':
-        current_transactions = play_bank_account(current_transactions)
-    elif command == 'author':
-        print('Автор программы: Динов Радик Камилевич')
-        print('vk.com/din_93')
-        print('t.me/din_93')
-    elif command == 'exit':
-        print('Завершение Simple File Manager...')
-        break
-    else:
-        print('Не распознана введенная команда')
+def main():
+    print('\nSimple Commands Manager v0.1')
+    fsmanage.whereami()
+    print('Используйте команду "help" для получения информации о доступных командах')
+    print('Вводите команду после @>:')
+    while True:
+        command = input('@> ').lower().strip()
+        if command == 'help':
+            print_help()
+        elif command == 'whereami':
+            fsmanage.whereami()
+        elif command == 'makedir':
+            fsmanage.makedir()
+        elif command == 'remove':
+            fsmanage.remove(exceptional_dirs=exceptional_dirs)
+        elif command == 'rename':
+            fsmanage.rename()
+        elif command == 'move':
+            fsmanage.move()
+        elif command == 'copy':
+            fsmanage.copy()
+        elif command == 'dirlist':
+            fsmanage.dirlist()
+        elif command == 'dirlist-d':
+            fsmanage.dirlist(dirs_only=True)
+        elif command == 'dirlist-f':
+            fsmanage.dirlist(files_only=True)
+        elif command == 'changedir':
+            fsmanage.changedir()
+        elif command == 'sysinfo':
+            sysinfo()
+        elif command == 'playvictory':
+            play_victory()
+        elif command == 'playbankaccount':
+            current_transactions = play_bank_account(current_transactions)
+        elif command == 'author':
+            print('Автор программы: Динов Радик Камилевич')
+            print('vk.com/din_93')
+            print('t.me/din_93')
+        elif command == 'exit':
+            print('Завершение Simple File Manager...')
+            break
+        else:
+            print('Не распознана введенная команда')
+
+if __name__=='__main__':
+    main()
