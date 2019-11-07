@@ -6,8 +6,9 @@ def filter_dirname(dirname):
 def whereami():
     print(f'Рабочая директория:\n  {os.getcwd()}')
 
-def makedir():
-    dirname = input('Введите название создаваемой папки: ')
+def makedir(dirname=None):
+    if dirname is None:
+        dirname = input('Введите название создаваемой папки: ')
     dirname = filter_dirname(dirname)
     try:
         os.mkdir(os.path.join(os.getcwd(), dirname))
@@ -17,8 +18,9 @@ def makedir():
     except OSError:
         print(f'Папка "{dirname}" не может быть создана.')
 
-def remove(exceptional_dirs=[]):
-    remove_subj = input('Введите название файла/папки для удаления: ')
+def remove(remove_subj=None, exceptional_dirs=[]):
+    if remove_subj is None:
+        remove_subj = input('Введите название файла/папки для удаления: ')
     remove_subj = filter_dirname(remove_subj)
     if os.path.join(os.getcwd(), remove_subj) in exceptional_dirs:
         print(f'Запрещено удаление папки/файла "{remove_subj}"/')
@@ -35,65 +37,71 @@ def remove(exceptional_dirs=[]):
         except OSError:
             print(f'Ошибка удаления папки/файла "{remove_subj}".')
 
-def rename():
-    source = input('Введите название файла/папки для переименования: ')
-    source = filter_dirname(source)
-    if not os.path.exists(source):
-        print(f'Папка/файл "{source}" не существует в рабочей директории.')
+def rename(oldname=None, newname=None):
+    if oldname is None:
+        oldname = input('Введите название файла/папки для переименования: ')
+    oldname = filter_dirname(oldname)
+    if not os.path.exists(oldname):
+        print(f'Папка/файл "{oldname}" не существует в рабочей директории.')
         return
-    destination = input('Введите новое название для файла/папки: ')
-    destination = filter_dirname(destination)
-    if os.path.exists(destination):
-        print(f'Файл/папка с названием "{destination}" уже существует.')
+    if newname is None:
+        newname = input('Введите новое название для файла/папки: ')
+    newname = filter_dirname(newname)
+    if os.path.exists(newname):
+        print(f'Файл/папка с названием "{newname}" уже существует.')
         return
         
     try:
-        os.rename(source, destination)
-        print(f'Переименован файл/папка "{source}". Новое название: "{destination}".')
+        os.rename(oldname, newname)
+        print(f'Переименован файл/папка "{oldname}". Новое название: "{newname}".')
     except OSError:
-        print(f'Возникла ошибка при попытке переименования файла/папки "{source}" в "{destination}".')
+        print(f'Возникла ошибка при попытке переименования файла/папки "{oldname}" в "{newname}".')
 
-def move():
-    source_name = input('Введите название файла/папки для перемещения: ')
-    source_name = filter_dirname(source_name)
-    if not os.path.exists(source_name):
-        print(f'Папка/файл "{source_name}" не существует в рабочей директории.')
+def move(filename=None, destination=None):
+    if filename is None:
+        filename = input('Введите название файла/папки для перемещения: ')
+    filename = filter_dirname(filename)
+    if not os.path.exists(filename):
+        print(f'Папка/файл "{filename}" не существует в рабочей директории.')
         return
-    destination = input('Введите новую директорию для файла/папки: ')
+    if destination is None:
+        destination = input('Введите новую директорию для файла/папки: ')
     if os.path.isfile(destination):
         print(f'Перемещение невозможно, т.к. "{destination}" не является директорией.')
         return
         
     try:
-        new_place = shutil.move(source_name, os.path.join(destination, source_name))
-        print(f'Выполнено перемещение файла/папки "{source_name}". Новое расположение: "{new_place}".')
+        new_place = shutil.move(filename, os.path.join(destination, filename))
+        print(f'Выполнено перемещение файла/папки "{filename}". Новое расположение: "{new_place}".')
     except OSError:
-        print(f'Возникла ошибка при попытке перемещения файла/папки "{source_name}" в "{destination}".')    
+        print(f'Возникла ошибка при попытке перемещения файла/папки "{filename}" в "{destination}".')    
 
-def copy():
-    source = input('Введите название файла/папки для копирования: ')
-    source = filter_dirname(source)
-    if not os.path.exists(source):
-        print(f'Папка/файл "{source}" не существует в рабочей директории.')
+def copy(filename=None, copyname=None):
+    if filename is None:
+        filename = input('Введите название файла/папки для копирования: ')
+    filename = filter_dirname(filename)
+    if not os.path.exists(filename):
+        print(f'Папка/файл "{filename}" не существует в рабочей директории.')
         return
-    destination = input('Введите название для копии файла/папки: ')
-    destination = filter_dirname(destination)
-    if os.path.exists(destination):
-        print(f'Файл/папка с названием "{destination}" уже существует.')
+    if copyname is None:
+        copyname = input('Введите название для копии файла/папки: ')
+    copyname = filter_dirname(copyname)
+    if os.path.exists(copyname):
+        print(f'Файл/папка с названием "{copyname}" уже существует.')
         return
     
-    if os.path.isfile(source):
+    if os.path.isfile(filename):
         try:
-            shutil.copy2(source, destination)
-            print(f'Создана копия файла "{source}" с названием "{destination}".')
+            shutil.copy2(filename, copyname)
+            print(f'Создана копия файла "{filename}" с названием "{copyname}".')
         except OSError:
-            print(f'Возникла ошибка при создании копии файла с названием "{destination}".')
+            print(f'Возникла ошибка при создании копии файла с названием "{copyname}".')
     else:
         try:
-            shutil.copytree(source, destination)
-            print(f'Создана копия папки "{source}" с названием "{destination}".')
+            shutil.copytree(filename, copyname)
+            print(f'Создана копия папки "{filename}" с названием "{copyname}".')
         except OSError:
-            print(f'Возникла ошибка при создании копии папки с названием "{destination}".')
+            print(f'Возникла ошибка при создании копии папки с названием "{copyname}".')
         
 
 def dirlist(dirs_only=False, files_only=False):
@@ -109,8 +117,9 @@ def dirlist(dirs_only=False, files_only=False):
         print('Полное содержимое рабочей директории:')
         print(', '.join(os.listdir()))
 
-def changedir():
-    destination = input('Введите новую рабочую директорию: ')
+def changedir(destination=None):
+    if destination is None:
+        destination = input('Введите новую рабочую директорию: ')
     if not os.path.exists(destination):
         print(f'Не существует рабочей директории "{destination}".')
         return
