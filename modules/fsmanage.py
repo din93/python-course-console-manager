@@ -104,18 +104,27 @@ def copy(filename=None, copyname=None):
             print(f'Возникла ошибка при создании копии папки с названием "{copyname}".')
         
 
-def dirlist(dirs_only=False, files_only=False):
+def dirlist(dirs_only=False, files_only=False, dump_file=False):
+    list_of_files = [f for f in os.listdir() if os.path.isfile(f)]
+    list_of_dirs = [f for f in os.listdir() if not os.path.isfile(f)]
     if dirs_only:
         print('Список папок в рабочей директории:')
-        list_of_dirs = [f for f in os.listdir() if not os.path.isfile(f)]
         print(', '.join(list_of_dirs))
     elif files_only:
         print('Список файлов в рабочей директории:')
-        list_of_files = [f for f in os.listdir() if os.path.isfile(f)]
         print(', '.join(list_of_files))
+    elif dump_file:
+        filename = 'dirlist.txt'
+        with open(filename, 'w') as dfile:
+            dfile.writelines([
+                f'files: {", ".join(list_of_files)}\n',
+                f'dirs: {", ".join(list_of_dirs)}\n'
+            ])
+        print(f'Полное содержимое рабочей директории сохранено в файл {filename}.')
     else:
         print('Полное содержимое рабочей директории:')
-        print(', '.join(os.listdir()))
+        print(f'Файлы: {", ".join(list_of_files)}')
+        print(f'Папки: {", ".join(list_of_dirs)}')
 
 def changedir(destination=None):
     if destination is None:
