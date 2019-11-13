@@ -3,7 +3,6 @@ import modules.fsmanage as fsmanage
 from modules.playvictory import play_victory
 from modules.playbankaccount import play_bank_account
 
-current_transactions = []
 exceptional_dirs = [os.path.join(os.getcwd(), f) for f in ['modules', 'main.py', '.git']]
 
 def print_help():
@@ -18,6 +17,7 @@ def print_help():
     print('  dirlist => просмотр содержимого рабочей директории')
     print('  dirlist-d => посмотреть только папки')
     print('  dirlist-f => посмотреть только файлы')
+    print('  dirlist-save => сохранить содержимое рабочей директории в файл')
     print('  changedir => смена рабочей директории')
     print('  sysinfo => просмотр информации об операционной системе')
     print('  playvictory => играть в викторину')
@@ -57,6 +57,8 @@ def main():
             fsmanage.dirlist(dirs_only=True)
         elif command == 'dirlist-f':
             fsmanage.dirlist(files_only=True)
+        elif command == 'dirlist-save':
+            fsmanage.dirlist(dump_file=True)
         elif command == 'changedir':
             fsmanage.changedir()
         elif command == 'sysinfo':
@@ -64,7 +66,7 @@ def main():
         elif command == 'playvictory':
             play_victory()
         elif command == 'playbankaccount':
-            current_transactions = play_bank_account(current_transactions)
+            play_bank_account()
         elif command == 'author':
             print('Автор программы: Динов Радик Камилевич')
             print('vk.com/din_93')

@@ -1,3 +1,15 @@
+import os, json
+
+transactions_path = 'transactions.json'
+
+def save_transactions(transactions, transactions_path):
+    with open(transactions_path, 'w', encoding='utf-8') as tfile:
+        tfile.write(json.dumps(transactions, ensure_ascii=False))
+
+def read_transactions(transactions_path):
+    with open(transactions_path, 'r', encoding='utf-8') as tfile:
+        transactions = json.loads(tfile.read())
+    return transactions
 
 def put_cash(transactions):
     amount = input('Введите сумму для пополнения: ')
@@ -5,6 +17,7 @@ def put_cash(transactions):
         print('Некорректная сумма для пополнения счета!')
         amount = input('Введите сумму для пополнения: ')
     transactions.append(("Пополнение счета", int(amount)))
+    save_transactions(transactions, transactions_path)
 
 def buy(transactions):
     sum_transactions = sum([trans[1] for trans in transactions])
@@ -19,6 +32,7 @@ def buy(transactions):
         if not int(amount) > sum_transactions:
             product_name = input('Введите название продукта: ')
             transactions.append(('Покупка '+product_name, -int(amount)))
+            save_transactions(transactions, transactions_path)
         else:
             print('Недостаточно средств для покупки на данную сумму!')
             input('\nНажмите Enter чтобы продолжить ')
@@ -32,12 +46,20 @@ def get_transactions_history(transactions):
             print(f'--- {name}: {amount} валюты')
     input('\nНажмите Enter чтобы продолжить ')
 
-def play_bank_account(transactions = []):
+def play_bank_account():
     print('Game Bank Account v0.1')
     option_putting_cash = '1. пополнение'
     option_buying = '2. покупка'
     option_transactions_history = '3. история покупок'
     option_exit_game = '4. выход'
+    if os.path.isfile(transactions_path):
+        try:
+            transactions = read_transactions(transactions_path)
+        except:
+            print('Ошибка чтения файла с транзакциями, произведен сброс')
+            transactions = []
+    else:
+        transactions = []
     while True:
         print('*'*20)
         sum_transactions = sum([trans[1] for trans in transactions])
