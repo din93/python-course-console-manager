@@ -3,7 +3,7 @@ import modules.fsmanage as fsmanage
 from modules.playvictory import play_victory
 from modules.playbankaccount import play_bank_account
 
-exceptional_dirs = [os.path.join(os.getcwd(), f) for f in ['modules', 'main.py', '.git']]
+exceptional_dirs = [os.path.join(os.getcwd(), fdir) for fdir in ['modules', 'main.py', '.git']]
 
 def print_help():
     print('Список команд:')
